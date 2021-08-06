@@ -1,15 +1,20 @@
+package com.openlending.tests;
+
+import com.openlending.utilities.ConfigurationReader;
+import com.openlending.utilities.Driver;
+import com.openlending.utilities.Pages;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
 public class VerifyTagLine {
+
+    Pages pages = new Pages();
 
     @Before
     public void setUp() {
@@ -29,22 +34,21 @@ public class VerifyTagLine {
     @Test
     public void verifySlogan(){
 
-        Driver.getDriver().findElement(By.cssSelector("input.gLFyf.gsfi")).sendKeys("Open Lending");
-
-        WebElement searchBox = Driver.getDriver().findElement(By.className("gNO89b"));
+        pages.getGoogle_page().searchBox.sendKeys("Open Lending");
 
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), 10);
-        wait.until(ExpectedConditions.visibilityOf(searchBox));
 
-        Driver.getDriver().findElement(By.className("gNO89b")).click();
+        wait.until(ExpectedConditions.visibilityOf(pages.getGoogle_page().googleSearchButton));
 
-        Driver.getDriver().findElement(By.xpath("//a[contains(@href,'linkedin.com/company/open-lending')]")).click();
+        pages.getGoogle_page().googleSearchButton.click();
 
-        String expected = "Say YES to more automotive loans." ;
+        pages.getGoogle_page().openLendingLinkedIN.click();
 
-        String actual = Driver.getDriver().findElement(By.cssSelector("h4.top-card-layout__second-subline")).getText();
+        String expectedSlogan = "Say YES to more automotive loans." ;
 
-        Assert.assertTrue(expected.equalsIgnoreCase(actual));
+        String actualSlogan = pages.getLinkedIN_page().slogan.getText();
+
+        Assert.assertTrue(expectedSlogan.equalsIgnoreCase(actualSlogan));
 
     }
 
